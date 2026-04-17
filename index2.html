@@ -10,94 +10,119 @@
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&display=swap');
         body { background-color: #0f172a; font-family: 'Chakra Petch', sans-serif; color: #e2e8f0; }
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .input-field { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; padding: 0.75rem 1rem; border-radius: 0.75rem; width: 100%; }
+        .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3); outline: none; }
+        
+        /* ปุ่มย้อนกลับแบบเก่าที่คุณต้องการ */
         .btn-back { transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1); }
         .btn-back:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(-5px); }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-3xl mx-auto">
         <header class="mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 w-full">
                 <a href="index.html" class="btn-back px-4 py-2 rounded-xl flex items-center gap-2 text-slate-400 hover:text-white">
                     <i class="fas fa-arrow-left"></i> ย้อนกลับ
                 </a>
                 <div>
                     <h1 class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent uppercase">
-                        Maintenance History & Logs
+                        Maintenance Logs Form
                     </h1>
-                    <p class="text-slate-500 text-sm">ข้อมูลบันทึกย้อนหลังและรายงานสรุป</p>
+                    <p class="text-slate-500 text-sm">ฟอร์มบันทึกข้อมูลการซ่อมบำรุง</p>
                 </div>
             </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="glass-card p-6 border-b-4 border-blue-500">
-                <p class="text-slate-400 text-sm uppercase">Total Records</p>
-                <h3 class="text-3xl font-bold mt-1">128 <span class="text-sm font-normal text-slate-500 text-xs">รายการ</span></h3>
-            </div>
-            <div class="glass-card p-6 border-b-4 border-emerald-500">
-                <p class="text-slate-400 text-sm uppercase">Last Maintenance</p>
-                <h3 class="text-3xl font-bold mt-1 text-emerald-400">Type A1</h3>
-                <p class="text-xs text-slate-500 mt-1">วันที่: 12/03/2026</p>
-            </div>
-            <div class="glass-card p-6 border-b-4 border-amber-500">
-                <p class="text-slate-400 text-sm uppercase">Equipment Health</p>
-                <h3 class="text-3xl font-bold mt-1">94%</h3>
-            </div>
-        </div>
+        <div class="glass-card p-6 md:p-10 shadow-2xl">
+            <form id="logForm" class="space-y-6">
+                
+                <div>
+                    <label class="block text-sm font-semibold text-slate-400 mb-2">วันที่ :</label>
+                    <input type="date" id="recordDate" class="input-field max-w-xs">
+                </div>
 
-        <div class="glass-card overflow-hidden shadow-2xl">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center">
-                <h2 class="font-semibold text-blue-400"><i class="fas fa-list-ul mr-2"></i>ประวัติการบันทึกข้อมูล</h2>
-                <button class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition-all text-slate-300">
-                    <i class="fas fa-download mr-1"></i> Export PDF
-                </button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-800/50 text-slate-400 text-xs uppercase">
-                        <tr>
-                            <th class="p-4 font-semibold">วันที่บันทึก</th>
-                            <th class="p-4 font-semibold">Current EOH</th>
-                            <th class="p-4 font-semibold">Avg. Rate</th>
-                            <th class="p-4 font-semibold">สถานะ</th>
-                            <th class="p-4 font-semibold text-center">จัดการ</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm divide-y divide-white/5 text-slate-300">
-                        <tr class="hover:bg-white/5 transition-colors">
-                            <td class="p-4 italic">17/04/2026</td>
-                            <td class="p-4 font-bold text-white">8,450.00</td>
-                            <td class="p-4 font-mono">24.0</td>
-                            <td class="p-4">
-                                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-1 rounded-full border border-emerald-500/20 italic">ปกติ</span>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="text-slate-500 hover:text-blue-400 mx-2"><i class="fas fa-edit"></i></button>
-                                <button class="text-slate-500 hover:text-red-400 mx-2"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-white/5 transition-colors">
-                            <td class="p-4 italic">10/04/2026</td>
-                            <td class="p-4 font-bold text-white">8,282.00</td>
-                            <td class="p-4 font-mono">24.0</td>
-                            <td class="p-4 text-slate-500">
-                                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-1 rounded-full border border-emerald-500/20 italic">ปกติ</span>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button class="text-slate-500 hover:text-blue-400 mx-2"><i class="fas fa-edit"></i></button>
-                                <button class="text-slate-500 hover:text-red-400 mx-2"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="p-4 bg-slate-800/30 text-center">
-                <button class="text-xs text-slate-500 hover:text-slate-300">ดูข้อมูลทั้งหมด...</button>
-            </div>
+                <div class="grid grid-cols-2 gap-6 max-w-md">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-400 mb-2">Type :</label>
+                        <select id="maintType" class="input-field appearance-none cursor-pointer">
+                            <option value="">-- เลือก Type --</option>
+                            <option value="A1">TYPE A1 (9k)</option>
+                            <option value="B">TYPE B (18k)</option>
+                            <option value="A2">TYPE A2 (27k)</option>
+                            <option value="C">TYPE C (36k)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-400 mb-2">ครั้งที่ :</label>
+                        <input type="number" id="maintCount" placeholder="ระบุตัวเลข" class="input-field" min="1">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-400 mb-2">Start date :</label>
+                    <input type="date" id="startDate" class="input-field max-w-xs">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-400 mb-2">Finish date :</label>
+                    <input type="date" id="finishDate" class="input-field max-w-xs">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-400 mb-2">เวลาที่ใช้ (วัน) :</label>
+                    <input type="number" id="durationDays" placeholder="ระบุจำนวนวัน" class="input-field max-w-xs" min="0">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-400 mb-2">Comment :</label>
+                    <textarea id="comment" rows="4" placeholder="พิมพ์รายละเอียดเพิ่มเติมที่นี่..." class="input-field resize-none"></textarea>
+                </div>
+
+                <hr class="border-slate-700 my-6">
+
+                <div>
+                    <button type="button" onclick="saveLogData()" id="btnSaveLog" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 w-full sm:w-auto">
+                        <i class="fas fa-save"></i> บันทึกข้อมูล
+                    </button>
+                </div>
+
+            </form>
         </div>
     </div>
 
+    <script>
+        // เซ็ตค่าช่อง "วันที่" ให้เป็นวันปัจจุบันตอนเปิดหน้าเว็บ
+        document.getElementById('recordDate').valueAsDate = new Date();
+
+        function saveLogData() {
+            // ดึงค่าทั้งหมดจากฟอร์ม
+            const date = document.getElementById('recordDate').value;
+            const type = document.getElementById('maintType').value;
+            const start = document.getElementById('startDate').value;
+
+            // เช็คว่ากรอกข้อมูลสำคัญเบื้องต้นหรือยัง
+            if (!date || !type || !start) {
+                alert("กรุณากรอกข้อมูล วันที่, Type และ Start date ให้ครบถ้วน");
+                return;
+            }
+
+            // เปลี่ยนหน้าตาปุ่มตอนกดบันทึก
+            const btn = document.getElementById('btnSaveLog');
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังบันทึก...';
+            btn.disabled = true;
+
+            // จำลองการดีเลย์ 1 วินาที ให้เหมือนกำลังส่งข้อมูล
+            setTimeout(() => {
+                alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
+                
+                // คืนค่าปุ่มกลับมาเหมือนเดิม
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
