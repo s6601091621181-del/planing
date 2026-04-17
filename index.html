@@ -3,177 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GT26 Maintenance Planner - Data Link</title>
+    <title>GT26 Maintenance Report</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&display=swap');
         body { background-color: #0f172a; font-family: 'Chakra Petch', sans-serif; color: #e2e8f0; }
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .input-field { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; text-align: center; }
-        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); outline: none; }
-        
-        .nav-button { transition: all 0.3s; border-width: 1px; }
-        .nav-button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .input-field { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; }
+        .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3); outline: none; }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="mb-10 flex flex-col lg:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                    GT26 MAINTENANCE DATABASE <span class="text-yellow-400 text-lg ml-2">(อัปเดตแล้ว)</span>
-                </h1>
-                <p class="text-slate-400">ระบบบันทึกและพยากรณ์แผนซ่อมบำรุงแม่นยำรายวัน</p>
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent uppercase">Maintenance Report</h1>
+                <p class="text-slate-400">รายงานผลการซ่อมบำรุงตามแผน</p>
             </div>
-            
-            <div class="flex flex-wrap justify-center gap-3">
-                <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID" target="_blank" 
-                   class="nav-button flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-500/10 border-blue-500/40 text-blue-400 font-semibold text-sm">
-                    <i class="fas fa-table"></i>
-                    <span>ข้อมูล Google Sheets</span>
-                </a>
-
-                <a href="index2.html" 
-                   class="nav-button flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500/10 border-emerald-500/40 text-emerald-400 font-semibold text-sm">
-                    <i class="fas fa-history"></i>
-                    <span>ดูบันทึกและประวัติ</span>
-                </a>
-            </div>
+            <button onclick="window.location.href='index.html'" class="bg-slate-800 hover:bg-slate-700 text-slate-300 py-2 px-4 rounded-xl transition-all border border-slate-700 flex items-center">
+                <i class="fas fa-chevron-left mr-2"></i> กลับหน้าหลัก
+            </button>
         </header>
 
-        <div class="glass-card p-8 mb-8 shadow-2xl">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">วันที่บันทึกข้อมูล</label>
-                    <input type="date" id="baseDate" class="input-field w-full p-3 rounded-xl">
+        <div class="glass-card p-8 shadow-2xl border-t-4 border-emerald-500">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-emerald-400 uppercase mb-2 tracking-wider">วันที่บันทึกรายงาน</label>
+                    <input type="date" id="reportDate" class="input-field w-full md:w-1/3 p-3 rounded-xl">
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Current EOH (Hrs)</label>
-                    <input type="number" id="currentEOH" placeholder="0.00" class="input-field w-full p-3 rounded-xl text-xl font-bold">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Avg. EOH / Day</label>
-                    <input type="number" id="avgEOHPerDay" value="24" class="input-field w-full p-3 rounded-xl">
-                </div>
-                <div class="flex items-end">
-                    <button onclick="saveAndCalculate()" id="btnSave" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-emerald-600/20">
-                        <i class="fas fa-cloud-upload-alt mr-2"></i> บันทึกและพยากรณ์
-                    </button>
-                </div>
-            </div>
-        </div>
 
-        <h2 class="text-lg font-semibold mb-4 text-blue-400"><i class="fas fa-calendar-alt mr-2"></i>พยากรณ์รอบปัจจุบัน (Next Maintenance)</h2>
-        <div id="results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div id="card_typeA1" class="glass-card p-5 border-l-4 border-emerald-500">
-                <h3 class="text-emerald-400 font-bold text-sm">TYPE A1 (9k)</h3>
-                <div id="typeA1_days" class="text-2xl font-bold text-white my-2">-- วัน</div>
-                <div class="space-y-1">
-                    <div id="typeA1_start" class="text-[11px] text-slate-300">เริ่ม: -</div>
-                    <div id="typeA1_finish" class="text-[11px] text-emerald-300">เสร็จ: -</div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2 tracking-wider">Type (ประเภทการซ่อม)</label>
+                    <select id="maintType" class="input-field w-full p-3 rounded-xl appearance-none">
+                        <option value="A1">Type A1 (9k)</option>
+                        <option value="B">Type B (18k)</option>
+                        <option value="A2">Type A2 (27k)</option>
+                        <option value="C">Type C (36k)</option>
+                    </select>
                 </div>
-            </div>
-            <div id="card_typeB" class="glass-card p-5 border-l-4 border-amber-500">
-                <h3 class="text-amber-400 font-bold text-sm">TYPE B (18k)</h3>
-                <div id="typeB_days" class="text-2xl font-bold text-white my-2">-- วัน</div>
-                <div class="space-y-1">
-                    <div id="typeB_start" class="text-[11px] text-slate-300">เริ่ม: -</div>
-                    <div id="typeB_finish" class="text-[11px] text-amber-300">เสร็จ: -</div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2 tracking-wider">ครั้งที่ (Set)</label>
+                    <input type="number" id="maintSet" placeholder="เช่น 1" class="input-field w-full p-3 rounded-xl">
                 </div>
-            </div>
-            <div id="card_typeA2" class="glass-card p-5 border-l-4 border-emerald-500">
-                <h3 class="text-emerald-400 font-bold text-sm">TYPE A2 (27k)</h3>
-                <div id="typeA2_days" class="text-2xl font-bold text-white my-2">-- วัน</div>
-                <div class="space-y-1">
-                    <div id="typeA2_start" class="text-[11px] text-slate-300">เริ่ม: -</div>
-                    <div id="typeA2_finish" class="text-[11px] text-emerald-300">เสร็จ: -</div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-blue-400 uppercase mb-2 tracking-wider">Start Date (เริ่ม)</label>
+                    <input type="date" id="startDate" class="input-field w-full p-3 rounded-xl">
                 </div>
-            </div>
-            <div id="card_typeC" class="glass-card p-5 border-l-4 border-red-500">
-                <h3 class="text-red-400 font-bold text-sm">TYPE C (36k)</h3>
-                <div id="typeC_days" class="text-2xl font-bold text-white my-2">-- วัน</div>
-                <div class="space-y-1">
-                    <div id="typeC_start" class="text-[11px] text-slate-300">เริ่ม: -</div>
-                    <div id="typeC_finish" class="text-[11px] text-red-300">เสร็จ: -</div>
+                <div>
+                    <label class="block text-xs font-semibold text-blue-400 uppercase mb-2 tracking-wider">Finish Date (เสร็จ)</label>
+                    <input type="date" id="finishDate" class="input-field w-full p-3 rounded-xl">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2 tracking-wider">เวลาที่ใช้ทั้งหมด (วัน)</label>
+                    <input type="number" id="durationDays" placeholder="0" class="input-field w-full md:w-1/4 p-3 rounded-xl text-xl font-bold text-emerald-400">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2 tracking-wider">Comment (รายละเอียดเพิ่มเติม)</label>
+                    <textarea id="comment" rows="4" placeholder="ระบุรายละเอียดการซ่อมบำรุง..." class="input-field w-full p-4 rounded-xl resize-none"></textarea>
+                </div>
+
+                <div class="md:col-span-2 mt-4">
+                    <button onclick="submitReport()" id="btnSubmit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-emerald-600/20 flex justify-center items-center text-lg">
+                        <i class="fas fa-save mr-2"></i> บันทึกข้อมูลรายงาน
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvobcKrQQs7mVTmxLVAy09zALU0h1WVeU84_y45P52sTv8N7wb8n_DgXRtURs2od05/exec';
-        document.getElementById('baseDate').valueAsDate = new Date();
+        // ใส่ SCRIPT_URL ที่ได้จาก Google Apps Script ของ Sheet ใบใหม่ที่นี่
+        const REPORT_SCRIPT_URL = 'ใส่_URL_แอปสคริปต์_ใหม่ที่นี่';
 
-        async function saveAndCalculate() {
-            const baseDateInput = document.getElementById('baseDate').value;
-            const currentEOH = parseFloat(document.getElementById('currentEOH').value);
-            const avgRate = parseFloat(document.getElementById('avgEOHPerDay').value);
+        // ตั้งค่าวันที่เริ่มต้นเป็นวันนี้
+        document.getElementById('reportDate').valueAsDate = new Date();
 
-            if (!baseDateInput || isNaN(currentEOH) || isNaN(avgRate) || avgRate <= 0) { 
-                alert("กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง"); 
-                return; 
+        async function submitReport() {
+            const btn = document.getElementById('btnSubmit');
+            const data = {
+                reportDate: document.getElementById('reportDate').value,
+                type: document.getElementById('maintType').value,
+                set: document.getElementById('maintSet').value,
+                start: document.getElementById('startDate').value,
+                finish: document.getElementById('finishDate').value,
+                duration: document.getElementById('durationDays').value,
+                comment: document.getElementById('comment').value
+            };
+
+            // ตรวจสอบข้อมูลเบื้องต้น
+            if (!data.type || !data.set || !data.start || !data.finish) {
+                alert("กรุณากรอกข้อมูลหลักให้ครบถ้วน");
+                return;
             }
 
-            const btn = document.getElementById('btnSave');
-            const originalBtnText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> กำลังประมวลผล...';
             btn.disabled = true;
-
-            const schedule = [
-                { id: 'typeA1', name: 'Type A1', limit: 9000, duration: 8 },
-                { id: 'typeB', name: 'Type B', limit: 18000, duration: 9 },
-                { id: 'typeA2', name: 'Type A2', limit: 27000, duration: 8 },
-                { id: 'typeC', name: 'Type C', limit: 36000, duration: 37 }
-            ];
-
-            const baseDate = new Date(baseDateInput);
-            let lastFinishDate = null;
-            let isPreviousOverdue = false;
-
-            schedule.forEach((item, index) => {
-                const dayEl = document.getElementById(`${item.id}_days`);
-                const startEl = document.getElementById(`${item.id}_start`);
-                const finishEl = document.getElementById(`${item.id}_finish`);
-                let startDate;
-                if (currentEOH >= item.limit) {
-                    dayEl.innerText = "OVERDUE";
-                    startEl.innerText = "ผ่านมาแล้ว";
-                    finishEl.innerText = "-";
-                    lastFinishDate = new Date(baseDate); 
-                    isPreviousOverdue = true;
-                    return;
-                }
-                if (index === 0 || isPreviousOverdue) {
-                    let daysUntil = Math.floor((item.limit - currentEOH) / avgRate);
-                    startDate = new Date(baseDate);
-                    startDate.setDate(baseDate.getDate() + daysUntil);
-                    isPreviousOverdue = false;
-                } else {
-                    let daysToRun = Math.floor(9000 / avgRate);
-                    startDate = new Date(lastFinishDate);
-                    startDate.setDate(lastFinishDate.getDate() + daysToRun);
-                }
-                const finishDate = new Date(startDate);
-                finishDate.setDate(startDate.getDate() + item.duration);
-                const diffTime = startDate.getTime() - baseDate.getTime();
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                dayEl.innerText = `${diffDays.toLocaleString()} วัน`;
-                startEl.innerText = "เริ่ม: " + startDate.toLocaleDateString('th-TH');
-                finishEl.innerText = "เสร็จ: " + finishDate.toLocaleDateString('th-TH');
-                lastFinishDate = new Date(finishDate);
-            });
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> กำลังบันทึก...';
 
             try {
-                const payload = { recordDate: baseDateInput, currentEOH: currentEOH, avgRate: avgRate };
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                alert("บันทึกสำเร็จ!");
-            } catch (e) {
-                alert("บันทึกข้อมูลเรียบร้อยแล้ว");
+                // ส่งข้อมูลไปยัง Google Sheets
+                await fetch(REPORT_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                alert("บันทึกรายงานการซ่อมบำรุงเรียบร้อยแล้ว!");
+                // ล้างฟอร์มหลังจากบันทึกเสร็จ (เลือกเปิดใช้งานได้)
+                // location.reload(); 
+            } catch (error) {
+                console.error(error);
+                alert("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล");
             } finally {
-                btn.innerHTML = originalBtnText;
                 btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save mr-2"></i> บันทึกข้อมูลรายงาน';
             }
         }
     </script>
