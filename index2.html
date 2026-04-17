@@ -10,17 +10,17 @@
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&display=swap');
         body { background-color: #0f172a; font-family: 'Chakra Petch', sans-serif; color: #e2e8f0; }
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .input-field { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; padding: 0.75rem 1rem; border-radius: 0.75rem; width: 100%; }
-        .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3); outline: none; }
-        
-        /* ปุ่มย้อนกลับแบบเก่าที่คุณต้องการ */
         .btn-back { transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1); }
         .btn-back:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(-5px); }
+        
+        /* สไตล์สำหรับช่องกรอกข้อมูล */
+        .input-field { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; padding: 0.75rem 1rem; border-radius: 0.75rem; width: 100%; }
+        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); outline: none; }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-4xl mx-auto">
         <header class="mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-4 w-full">
                 <a href="index.html" class="btn-back px-4 py-2 rounded-xl flex items-center gap-2 text-slate-400 hover:text-white">
@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-400 mb-2">ครั้งที่ :</label>
-                        <input type="number" id="maintCount" placeholder="ระบุตัวเลข" class="input-field" min="1">
+                        <input type="text" id="maintCount" placeholder="ระบุครั้งที่" class="input-field">
                     </div>
                 </div>
 
@@ -72,7 +72,7 @@
 
                 <div>
                     <label class="block text-sm font-semibold text-slate-400 mb-2">เวลาที่ใช้ (วัน) :</label>
-                    <input type="number" id="durationDays" placeholder="ระบุจำนวนวัน" class="input-field max-w-xs" min="0">
+                    <input type="text" id="durationDays" placeholder="ระบุเวลาที่ใช้" class="input-field max-w-xs">
                 </div>
 
                 <div>
@@ -80,10 +80,10 @@
                     <textarea id="comment" rows="4" placeholder="พิมพ์รายละเอียดเพิ่มเติมที่นี่..." class="input-field resize-none"></textarea>
                 </div>
 
-                <hr class="border-slate-700 my-6">
+                <hr class="border-slate-700/50 my-6">
 
-                <div>
-                    <button type="button" onclick="saveLogData()" id="btnSaveLog" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 w-full sm:w-auto">
+                <div class="pt-2">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 w-full sm:w-auto">
                         <i class="fas fa-save"></i> บันทึกข้อมูล
                     </button>
                 </div>
@@ -92,37 +92,5 @@
         </div>
     </div>
 
-    <script>
-        // เซ็ตค่าช่อง "วันที่" ให้เป็นวันปัจจุบันตอนเปิดหน้าเว็บ
-        document.getElementById('recordDate').valueAsDate = new Date();
-
-        function saveLogData() {
-            // ดึงค่าทั้งหมดจากฟอร์ม
-            const date = document.getElementById('recordDate').value;
-            const type = document.getElementById('maintType').value;
-            const start = document.getElementById('startDate').value;
-
-            // เช็คว่ากรอกข้อมูลสำคัญเบื้องต้นหรือยัง
-            if (!date || !type || !start) {
-                alert("กรุณากรอกข้อมูล วันที่, Type และ Start date ให้ครบถ้วน");
-                return;
-            }
-
-            // เปลี่ยนหน้าตาปุ่มตอนกดบันทึก
-            const btn = document.getElementById('btnSaveLog');
-            const originalBtnText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังบันทึก...';
-            btn.disabled = true;
-
-            // จำลองการดีเลย์ 1 วินาที ให้เหมือนกำลังส่งข้อมูล
-            setTimeout(() => {
-                alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
-                
-                // คืนค่าปุ่มกลับมาเหมือนเดิม
-                btn.innerHTML = originalBtnText;
-                btn.disabled = false;
-            }, 1000);
-        }
-    </script>
 </body>
 </html>
