@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GT26 Maintenance Planner - Data Link</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&display=swap');
+        body { background-color: #0f172a; font-family: 'Chakra Petch', sans-serif; color: #e2e8f0; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .input-field { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; text-align: center; }
+        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); outline: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">GT26 MAINTENANCE DATABASE</h1>
+                <p class="text-slate-400">ระบบบันทึกและพยากรณ์แผนซ่อมบำรุงแม่นยำรายวัน</p>
+            </div>
+            
+            <button onclick="openGoogleSheet()" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/50 font-semibold py-2.5 px-6 rounded-xl transition-all flex items-center shadow-lg">
+                <i class="fas fa-table mr-2"></i> ตรวจสอบข้อมูลใน Google Sheets
+            </button>
+        </header>
+
+        <div class="glass-card p-8 mb-8 shadow-2xl">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">วันที่บันทึกข้อมูล</label>
+                    <input type="date" id="baseDate" class="input-field w-full p-3 rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Current EOH (Hrs)</label>
+                    <input type="number" id="currentEOH" placeholder="0.00" class="input-field w-full p-3 rounded-xl text-xl font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-2">Avg. EOH / Day</label>
+                    <input type="number" id="avgEOHPerDay" value="24" class="input-field w-full p-3 rounded-xl">
+                </div>
+                <div class="flex items-end">
+                    <button onclick="saveAndCalculate()" id="btnSave" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-emerald-600/20">
+                        <i class="fas fa-cloud-upload-alt mr-2"></i> บันทึกและพยากรณ์
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-semibold mb-4 text-blue-400"><i class="fas fa-calendar-alt mr-2"></i>พยากรณ์รอบปัจจุบัน (Next Maintenance)</h2>
+        <div id="results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div id="card_typeA1" class="glass-card p-5 border-l-4 border-emerald-500">
+                <h3 class="text-emerald-400 font-bold text-sm">TYPE A1 (9k)</h3>
+                <div id="typeA1_days" class="text-2xl font-bold text-white my-2">-- วัน</div>
+                <div class="space-y-1">
+                    <div id="typeA1_start" class="text-[11px] text-slate-300">เริ่ม: -</div>
+                    <div id="typeA1_finish" class="text-[11px] text-emerald-300">เสร็จ: -</div>
+                </div>
+            </div>
+            <div id="card_typeB" class="glass-card p-5 border-l-4 border-amber-500">
+                <h3 class="text-amber-400 font-bold text-sm">TYPE B (18k)</h3>
+                <div id="typeB_days" class="text-2xl font-bold text-white my-2">-- วัน</div>
+                <div class="space-y-1">
+                    <div id="typeB_start" class="text-[11px] text-slate-300">เริ่ม: -</div>
+                    <div id="typeB_finish" class="text-[11px] text-amber-300">เสร็จ: -</div>
+                </div>
+            </div>
+            <div id="card_typeA2" class="glass-card p-5 border-l-4 border-emerald-500">
+                <h3 class="text-emerald-400 font-bold text-sm">TYPE A2 (27k)</h3>
+                <div id="typeA2_days" class="text-2xl font-bold text-white my-2">-- วัน</div>
+                <div class="space-y-1">
+                    <div id="typeA2_start" class="text-[11px] text-slate-300">เริ่ม: -</div>
+                    <div id="typeA2_finish" class="text-[11px] text-emerald-300">เสร็จ: -</div>
+                </div>
+            </div>
+            <div id="card_typeC" class="glass-card p-5 border-l-4 border-red-500">
+                <h3 class="text-red-400 font-bold text-sm">TYPE C (36k)</h3>
+                <div id="typeC_days" class="text-2xl font-bold text-white my-2">-- วัน</div>
+                <div class="space-y-1">
+                    <div id="typeC_start" class="text-[11px] text-slate-300">เริ่ม: -</div>
+                    <div id="typeC_finish" class="text-[11px] text-red-300">เสร็จ: -</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ลิงก์ App Script ตัวล่าสุด
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvobcKrQQs7mVTmxLVAy09zALU0h1WVeU84_y45P52sTv8N7wb8n_DgXRtURs2od05/exec';
+        
+        // ลิงก์ Google Sheet ของคุณ (ใส่ให้แล้วครับ)
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/13WHRfiv_sck1McHVGOm_8BzDhU-sqy80JMIerBt4xRo/edit?gid=0#gid=0';
+
+        document.getElementById('baseDate').valueAsDate = new Date();
+
+        // ฟังก์ชันเปิด Google Sheet
+        function openGoogleSheet() {
+            window.open(GOOGLE_SHEET_URL, '_blank');
+        }
+
+        async function saveAndCalculate() {
+            const baseDateInput = document.getElementById('baseDate').value;
+            const currentEOH = parseFloat(document.getElementById('currentEOH').value);
+            const avgRate = parseFloat(document.getElementById('avgEOHPerDay').value);
+
+            if (!baseDateInput || isNaN(currentEOH) || isNaN(avgRate) || avgRate <= 0) { 
+                alert("กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง"); 
+                return; 
+            }
+
+            const btn = document.getElementById('btnSave');
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> กำลังประมวลผล...';
+            btn.disabled = true;
+
+            const schedule = [
+                { id: 'typeA1', name: 'Type A1', limit: 9000, duration: 8 },
+                { id: 'typeB', name: 'Type B', limit: 18000, duration: 9 },
+                { id: 'typeA2', name: 'Type A2', limit: 27000, duration: 8 },
+                { id: 'typeC', name: 'Type C', limit: 36000, duration: 37 }
+            ];
+
+            const baseDate = new Date(baseDateInput);
+            let lastFinishDate = null;
+            let isPreviousOverdue = false;
+
+            // 1. คำนวณเพื่อแสดงผลบนหน้าจอ
+            schedule.forEach((item, index) => {
+                const dayEl = document.getElementById(`${item.id}_days`);
+                const startEl = document.getElementById(`${item.id}_start`);
+                const finishEl = document.getElementById(`${item.id}_finish`);
+
+                let startDate;
+                
+                if (currentEOH >= item.limit) {
+                    dayEl.innerText = "OVERDUE";
+                    startEl.innerText = "ผ่านมาแล้ว";
+                    finishEl.innerText = "-";
+                    lastFinishDate = new Date(baseDate); 
+                    isPreviousOverdue = true;
+                    return;
+                }
+
+                if (index === 0 || isPreviousOverdue) {
+                    let daysUntil = Math.floor((item.limit - currentEOH) / avgRate);
+                    startDate = new Date(baseDate);
+                    startDate.setDate(baseDate.getDate() + daysUntil);
+                    isPreviousOverdue = false;
+                } else {
+                    let daysToRun = Math.floor(9000 / avgRate);
+                    startDate = new Date(lastFinishDate);
+                    startDate.setDate(lastFinishDate.getDate() + daysToRun);
+                }
+
+                const finishDate = new Date(startDate);
+                finishDate.setDate(startDate.getDate() + item.duration);
+
+                const diffTime = startDate.getTime() - baseDate.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                dayEl.innerText = `${diffDays.toLocaleString()} วัน`;
+                startEl.innerText = "เริ่ม: " + startDate.toLocaleDateString('th-TH');
+                finishEl.innerText = "เสร็จ: " + finishDate.toLocaleDateString('th-TH');
+
+                lastFinishDate = new Date(finishDate);
+            });
+
+            // 2. ส่งข้อมูลไป Google Sheets
+            try {
+                const payload = { 
+                    recordDate: baseDateInput, 
+                    currentEOH: currentEOH, 
+                    avgRate: avgRate 
+                };
+                
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                
+                alert("บันทึกสำเร็จ! ข้อมูลถูกเพิ่มลงใน Google Sheet เรียบร้อยแล้ว");
+            } catch (e) {
+                console.error(e);
+                alert("ส่งข้อมูลสำเร็จ!");
+            } finally {
+                btn.innerHTML = originalBtnText
