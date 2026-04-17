@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GT26 Maintenance Planner - Data Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&display=swap');
+        body { background-color: #0f172a; font-family: 'Chakra Petch', sans-serif; color: #e2e8f0; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-back { transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(-5px); }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="btn-back px-4 py-2 rounded-xl flex items-center gap-2 text-slate-400 hover:text-white">
+                    <i class="fas fa-arrow-left"></i> ย้อนกลับ
+                </a>
+                <div>
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent uppercase">
+                        Maintenance History & Logs
+                    </h1>
+                    <p class="text-slate-500 text-sm">ข้อมูลบันทึกย้อนหลังและรายงานสรุป</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-card p-6 border-b-4 border-blue-500">
+                <p class="text-slate-400 text-sm uppercase">Total Records</p>
+                <h3 class="text-3xl font-bold mt-1">128 <span class="text-sm font-normal text-slate-500 text-xs">รายการ</span></h3>
+            </div>
+            <div class="glass-card p-6 border-b-4 border-emerald-500">
+                <p class="text-slate-400 text-sm uppercase">Last Maintenance</p>
+                <h3 class="text-3xl font-bold mt-1 text-emerald-400">Type A1</h3>
+                <p class="text-xs text-slate-500 mt-1">วันที่: 12/03/2026</p>
+            </div>
+            <div class="glass-card p-6 border-b-4 border-amber-500">
+                <p class="text-slate-400 text-sm uppercase">Equipment Health</p>
+                <h3 class="text-3xl font-bold mt-1">94%</h3>
+            </div>
+        </div>
+
+        <div class="glass-card overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                <h2 class="font-semibold text-blue-400"><i class="fas fa-list-ul mr-2"></i>ประวัติการบันทึกข้อมูล</h2>
+                <button class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition-all text-slate-300">
+                    <i class="fas fa-download mr-1"></i> Export PDF
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-800/50 text-slate-400 text-xs uppercase">
+                        <tr>
+                            <th class="p-4 font-semibold">วันที่บันทึก</th>
+                            <th class="p-4 font-semibold">Current EOH</th>
+                            <th class="p-4 font-semibold">Avg. Rate</th>
+                            <th class="p-4 font-semibold">สถานะ</th>
+                            <th class="p-4 font-semibold text-center">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm divide-y divide-white/5 text-slate-300">
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-4 italic">17/04/2026</td>
+                            <td class="p-4 font-bold text-white">8,450.00</td>
+                            <td class="p-4 font-mono">24.0</td>
+                            <td class="p-4">
+                                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-1 rounded-full border border-emerald-500/20 italic">ปกติ</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <button class="text-slate-500 hover:text-blue-400 mx-2"><i class="fas fa-edit"></i></button>
+                                <button class="text-slate-500 hover:text-red-400 mx-2"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-4 italic">10/04/2026</td>
+                            <td class="p-4 font-bold text-white">8,282.00</td>
+                            <td class="p-4 font-mono">24.0</td>
+                            <td class="p-4 text-slate-500">
+                                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-1 rounded-full border border-emerald-500/20 italic">ปกติ</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <button class="text-slate-500 hover:text-blue-400 mx-2"><i class="fas fa-edit"></i></button>
+                                <button class="text-slate-500 hover:text-red-400 mx-2"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 bg-slate-800/30 text-center">
+                <button class="text-xs text-slate-500 hover:text-slate-300">ดูข้อมูลทั้งหมด...</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
