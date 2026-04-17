@@ -3,93 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GT26 Maintenance Planner - Data Logs</title>
+    <title>Maintenance - Data Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&display=swap');
+        
+        /* พื้นหลังและฟอนต์แบบเก่า */
         body { background-color: #0f172a; font-family: 'Chakra Petch', sans-serif; color: #e2e8f0; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .btn-back { transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        /* สไตล์ปุ่มย้อนกลับแบบเก่า */
+        .btn-back { border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s; background-color: rgba(30, 41, 59, 0.8); }
         .btn-back:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(-5px); }
         
-        /* สไตล์สำหรับช่องกรอกข้อมูล */
-        .input-field { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; padding: 0.75rem 1rem; border-radius: 0.75rem; width: 100%; }
-        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); outline: none; }
+        /* สไตล์กล่องฟอร์มแบบเรียบง่าย */
+        .form-container { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 2rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
+        .input-label { display: block; margin-bottom: 0.5rem; color: #94a3b8; font-size: 1rem; }
+        .input-box { width: 100%; background: #0f172a; border: 1px solid #475569; color: white; padding: 0.75rem 1rem; border-radius: 8px; outline: none; transition: border-color 0.2s; }
+        .input-box:focus { border-color: #3b82f6; }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-6 md:p-12">
 
-    <div class="max-w-4xl mx-auto">
-        <header class="mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4 w-full">
-                <a href="index.html" class="btn-back px-4 py-2 rounded-xl flex items-center gap-2 text-slate-400 hover:text-white">
-                    <i class="fas fa-arrow-left"></i> ย้อนกลับ
-                </a>
-                <div>
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent uppercase">
-                        Maintenance Logs Form
-                    </h1>
-                    <p class="text-slate-500 text-sm">ฟอร์มบันทึกข้อมูลการซ่อมบำรุง</p>
-                </div>
-            </div>
-        </header>
+    <div class="max-w-3xl mx-auto">
+        
+        <div class="mb-8 flex items-center">
+            <a href="index.html" class="btn-back px-5 py-2.5 rounded-xl flex items-center gap-2 text-slate-300 hover:text-white">
+                <i class="fas fa-arrow-left"></i> ย้อนกลับ
+            </a>
+            <h1 class="text-xl md:text-2xl font-bold ml-6 text-blue-400">แบบฟอร์มบันทึกข้อมูล</h1>
+        </div>
 
-        <div class="glass-card p-6 md:p-10 shadow-2xl">
-            <form id="logForm" class="space-y-6">
+        <div class="form-container">
+            <form class="space-y-6">
                 
-                <div>
-                    <label class="block text-sm font-semibold text-slate-400 mb-2">วันที่ :</label>
-                    <input type="date" id="recordDate" class="input-field max-w-xs">
+                <div class="max-w-xs">
+                    <label class="input-label">วันที่ :</label>
+                    <input type="date" class="input-box">
                 </div>
 
-                <div class="grid grid-cols-2 gap-6 max-w-md">
+                <div class="grid grid-cols-2 gap-4 max-w-md">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-400 mb-2">Type :</label>
-                        <select id="maintType" class="input-field appearance-none cursor-pointer">
-                            <option value="">-- เลือก Type --</option>
-                            <option value="A1">TYPE A1 (9k)</option>
-                            <option value="B">TYPE B (18k)</option>
-                            <option value="A2">TYPE A2 (27k)</option>
-                            <option value="C">TYPE C (36k)</option>
-                        </select>
+                        <label class="input-label">Type :</label>
+                        <input type="text" placeholder="เช่น A1, B, C" class="input-box">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-400 mb-2">ครั้งที่ :</label>
-                        <input type="text" id="maintCount" placeholder="ระบุครั้งที่" class="input-field">
+                        <label class="input-label">ครั้งที่ :</label>
+                        <input type="text" placeholder="ระบุตัวเลข" class="input-box">
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-semibold text-slate-400 mb-2">Start date :</label>
-                    <input type="date" id="startDate" class="input-field max-w-xs">
+                <div class="max-w-xs">
+                    <label class="input-label">Start date :</label>
+                    <input type="date" class="input-box">
+                </div>
+
+                <div class="max-w-xs">
+                    <label class="input-label">Finish date :</label>
+                    <input type="date" class="input-box">
+                </div>
+
+                <div class="max-w-xs">
+                    <label class="input-label">เวลาที่ใช้ (วัน) :</label>
+                    <input type="text" placeholder="ระบุจำนวนวัน" class="input-box">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-slate-400 mb-2">Finish date :</label>
-                    <input type="date" id="finishDate" class="input-field max-w-xs">
+                    <label class="input-label">Comment :</label>
+                    <textarea rows="4" placeholder="พิมพ์รายละเอียดเพิ่มเติมที่นี่..." class="input-box resize-none"></textarea>
                 </div>
+
+                <hr class="border-slate-700 my-4">
 
                 <div>
-                    <label class="block text-sm font-semibold text-slate-400 mb-2">เวลาที่ใช้ (วัน) :</label>
-                    <input type="text" id="durationDays" placeholder="ระบุเวลาที่ใช้" class="input-field max-w-xs">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-slate-400 mb-2">Comment :</label>
-                    <textarea id="comment" rows="4" placeholder="พิมพ์รายละเอียดเพิ่มเติมที่นี่..." class="input-field resize-none"></textarea>
-                </div>
-
-                <hr class="border-slate-700/50 my-6">
-
-                <div class="pt-2">
-                    <button type="button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg transition-colors flex items-center justify-center gap-2 border border-blue-400 w-full sm:w-auto">
                         <i class="fas fa-save"></i> บันทึกข้อมูล
                     </button>
                 </div>
 
             </form>
         </div>
+        
     </div>
 
 </body>
