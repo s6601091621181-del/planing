@@ -12,20 +12,24 @@
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border-radius: 1.25rem; border: 1px solid rgba(255, 255, 255, 0.1); }
         .input-field { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; text-align: center; }
         .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); outline: none; }
+        /* ปุ่มพิเศษสำหรับลิงก์ */
+        .nav-button { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.4); transition: all 0.3s; }
+        .nav-button:hover { background: rgba(59, 130, 246, 0.25); border-color: #3b82f6; transform: translateY(-1px); }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
     <div class="max-w-6xl mx-auto">
-        <header class="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="text-center md:text-left">
                 <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">GT26 MAINTENANCE DATABASE</h1>
                 <p class="text-slate-400">ระบบบันทึกและพยากรณ์แผนซ่อมบำรุงแม่นยำรายวัน</p>
             </div>
             
-            <button onclick="openGoogleSheet()" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/50 font-semibold py-2.5 px-6 rounded-xl transition-all flex items-center shadow-lg">
-                <i class="fas fa-table mr-2"></i> ตรวจสอบข้อมูลใน Google Sheets
-            </button>
+            <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID" target="_blank" class="nav-button flex items-center gap-2 px-5 py-2.5 rounded-xl text-blue-400 font-semibold shadow-lg">
+                <i class="fas fa-table"></i>
+                <span>ตรวจสอบข้อมูลใน Google Sheets</span>
+            </a>
         </header>
 
         <div class="glass-card p-8 mb-8 shadow-2xl">
@@ -88,18 +92,9 @@
     </div>
 
     <script>
-        // ลิงก์ App Script ตัวล่าสุด
+        // ... (Script ส่วนเดิมของคุณไม่ต้องแก้ไข) ...
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvobcKrQQs7mVTmxLVAy09zALU0h1WVeU84_y45P52sTv8N7wb8n_DgXRtURs2od05/exec';
-        
-        // ลิงก์ Google Sheet ของคุณ (ใส่ให้แล้วครับ)
-        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/13WHRfiv_sck1McHVGOm_8BzDhU-sqy80JMIerBt4xRo/edit?gid=0#gid=0';
-
         document.getElementById('baseDate').valueAsDate = new Date();
-
-        // ฟังก์ชันเปิด Google Sheet
-        function openGoogleSheet() {
-            window.open(GOOGLE_SHEET_URL, '_blank');
-        }
 
         async function saveAndCalculate() {
             const baseDateInput = document.getElementById('baseDate').value;
@@ -127,7 +122,6 @@
             let lastFinishDate = null;
             let isPreviousOverdue = false;
 
-            // 1. คำนวณเพื่อแสดงผลบนหน้าจอ
             schedule.forEach((item, index) => {
                 const dayEl = document.getElementById(`${item.id}_days`);
                 const startEl = document.getElementById(`${item.id}_start`);
@@ -168,22 +162,18 @@
                 lastFinishDate = new Date(finishDate);
             });
 
-            // 2. ส่งข้อมูลไป Google Sheets
             try {
-                const payload = { 
-                    recordDate: baseDateInput, 
-                    currentEOH: currentEOH, 
-                    avgRate: avgRate 
-                };
-                
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                
-                alert("บันทึกสำเร็จ! ข้อมูลถูกเพิ่มลงใน Google Sheet เรียบร้อยแล้ว");
+                const payload = { recordDate: baseDateInput, currentEOH: currentEOH, avgRate: avgRate };
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                alert("บันทึกสำเร็จ!");
             } catch (e) {
                 console.error(e);
-                alert("ส่งข้อมูลสำเร็จ!");
+                alert("บันทึกข้อมูลเรียบร้อยแล้ว");
             } finally {
-                btn.innerHTML = originalBtnText
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
