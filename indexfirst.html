@@ -1,155 +1,96 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GT26 Maintenance System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GT26 Unit Selector</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <style>
-        body {
-            background: #0f172a;
-            color: #e2e8f0;
-            font-family: 'Segoe UI', sans-serif;
-        }
+<style>
+    body {
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-        .glass {
-            background: rgba(30,41,59,0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-    </style>
+    .card {
+        background: rgba(30,41,59,0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+</style>
 </head>
 
-<body class="p-6">
+<body class="flex items-center justify-center min-h-screen p-6">
 
-<div class="max-w-6xl mx-auto">
+<div class="max-w-4xl w-full">
 
-    <!-- HEADER -->
+    <!-- TITLE -->
     <div class="text-center mb-10">
         <h1 class="text-4xl font-bold text-blue-400">
             ⚙️ GT26 Maintenance Planner
         </h1>
         <p class="text-slate-400 mt-2">
-            ระบบวางแผนซ่อมบำรุง Gas Turbine แบบแม่นยำ
+            เลือกหน่วยเครื่อง (Unit)
         </p>
     </div>
 
-    <!-- MENU -->
-    <div class="grid md:grid-cols-3 gap-6">
+    <!-- 2 BOX -->
+    <div class="grid md:grid-cols-2 gap-8">
 
-        <!-- ไปหน้าคำนวณ -->
-        <div class="glass p-6 text-center hover:scale-105 transition">
-            <h2 class="text-xl font-bold mb-3 text-emerald-400">📊 คำนวณแผนซ่อม</h2>
-            <p class="text-sm text-slate-400 mb-4">
-                คำนวณรอบ A1 / B / A2 / C
+        <!-- UNIT 21 -->
+        <div onclick="goUnit21()" 
+             class="card p-10 text-center cursor-pointer">
+
+            <h2 class="text-2xl font-bold text-emerald-400 mb-4">
+                UNIT 21
+            </h2>
+
+            <p class="text-slate-400 mb-6">
+                เข้าไปดูแผนซ่อมของ Unit 21
             </p>
 
-            <button onclick="goCalculate()" 
-                class="bg-emerald-600 px-4 py-2 rounded-xl w-full hover:bg-emerald-500">
+            <button class="bg-emerald-600 px-6 py-3 rounded-xl hover:bg-emerald-500">
                 เข้าใช้งาน
             </button>
         </div>
 
-        <!-- Dashboard -->
-        <div class="glass p-6 text-center hover:scale-105 transition">
-            <h2 class="text-xl font-bold mb-3 text-blue-400">📈 Dashboard</h2>
-            <p class="text-sm text-slate-400 mb-4">
-                ดูภาพรวม Maintenance
+        <!-- UNIT 22 -->
+        <div onclick="goUnit22()" 
+             class="card p-10 text-center cursor-pointer">
+
+            <h2 class="text-2xl font-bold text-blue-400 mb-4">
+                UNIT 22
+            </h2>
+
+            <p class="text-slate-400 mb-6">
+                เข้าไปดูแผนซ่อมของ Unit 22
             </p>
 
-            <button onclick="goDashboard()" 
-                class="bg-blue-600 px-4 py-2 rounded-xl w-full hover:bg-blue-500">
-                เปิด Dashboard
+            <button class="bg-blue-600 px-6 py-3 rounded-xl hover:bg-blue-500">
+                เข้าใช้งาน
             </button>
         </div>
 
-        <!-- Google Sheet -->
-        <div class="glass p-6 text-center hover:scale-105 transition">
-            <h2 class="text-xl font-bold mb-3 text-yellow-400">📄 Data Sheet</h2>
-            <p class="text-sm text-slate-400 mb-4">
-                ตรวจสอบข้อมูลทั้งหมด
-            </p>
-
-            <button onclick="openSheet()" 
-                class="bg-yellow-500 px-4 py-2 rounded-xl w-full hover:bg-yellow-400 text-black">
-                เปิด Google Sheet
-            </button>
-        </div>
-
-    </div>
-
-    <!-- QUICK CALCULATE -->
-    <div class="glass mt-10 p-6">
-        <h2 class="text-lg font-bold text-purple-400 mb-4">
-            ⚡ Quick Calculate
-        </h2>
-
-        <div class="grid md:grid-cols-4 gap-4">
-
-            <input id="eoh" type="number" placeholder="Current EOH"
-                class="p-3 rounded bg-slate-800">
-
-            <input id="rate" type="number" value="24"
-                class="p-3 rounded bg-slate-800">
-
-            <button onclick="quickCalc()" 
-                class="bg-purple-600 rounded-xl hover:bg-purple-500">
-                คำนวณ
-            </button>
-
-        </div>
-
-        <div id="result" class="mt-6 text-lg"></div>
     </div>
 
 </div>
 
 <script>
 
-const GOOGLE_SHEET = "https://docs.google.com/spreadsheets/d/13WHRfiv_sck1McHVGOm_8BzDhU-sqy80JMIerBt4xRo/edit";
-
-function goCalculate() {
-    window.location.href = "index.html";
+function goUnit21() {
+    window.location.href = "unit21.html"; // เปลี่ยนชื่อไฟล์ได้
 }
 
-function goDashboard() {
-    window.location.href = "index2.html";
-}
-
-function openSheet() {
-    window.open(GOOGLE_SHEET, "_blank");
-}
-
-function quickCalc() {
-
-    const eoh = parseFloat(document.getElementById("eoh").value);
-    const rate = parseFloat(document.getElementById("rate").value);
-
-    if (isNaN(eoh) || isNaN(rate)) {
-        alert("กรอกข้อมูลก่อน");
-        return;
-    }
-
-    const targets = [9000,18000,27000,36000];
-    const names = ["A1","B","A2","C"];
-
-    let text = "";
-
-    for (let i=0; i<targets.length; i++) {
-
-        let day = Math.floor((targets[i] - eoh) / rate);
-
-        if (day < 0) {
-            text += `<p class="text-red-400">Type ${names[i]} : OVERDUE</p>`;
-        } else {
-            text += `<p>Type ${names[i]} : ${day} วัน</p>`;
-        }
-    }
-
-    document.getElementById("result").innerHTML = text;
+function goUnit22() {
+    window.location.href = "unit22.html";
 }
 
 </script>
